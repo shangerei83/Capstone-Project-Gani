@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketplace Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-bar">
+      <a class="logo" href="#home">Shoply</a>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Search products" />
+        <button id="searchBtn" class="btn btn-primary">Search</button>
+      </div>
+      <nav class="nav">
+        <a href="#catalog">Catalog</a>
+        <a href="#cart">Cart <span id="cartBadge" class="badge">0</span></a>
+        <a id="accountLink" href="#auth">Login</a>
+        <a id="sellerLink" href="#seller" class="hide">Seller</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="appRoot">
+    <!-- Views are injected here -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div>© <span id="year"></span> Shoply. Demo prototype.</div>
+      <div class="footer-links">
+        <a href="#">Help</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+
