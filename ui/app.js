@@ -18,28 +18,30 @@
     orders: [],
     cart: [],
     session: { userId: null },
-    seq: { product: 1, user: 1, review: 1, order: 1 }
+    seq: { product: 1, user: 1, review: 1, order: 1 },
+    version: 6
   };
 
   function load() {
-    const data = JSON.parse(localStorage.getItem('shoply') || 'null');
+    const data = JSON.parse(localStorage.getItem('ganimart') || 'null');
     if (!data) {
       seed();
       save();
       return store;
     }
     Object.assign(store, data);
+    migrate();
     return store;
   }
 
   function save() {
-    localStorage.setItem('shoply', JSON.stringify(store));
+    localStorage.setItem('ganimart', JSON.stringify(store));
   }
 
   function seed() {
     // Users: customer and seller
     store.users = [
-      { id: 1, email: 'alice@example.com', name: 'Alice', role: 'customer', password: 'pass' },
+      { id: 1, email: 'gani@example.com', name: 'Gani', role: 'customer', password: 'pass' },
       { id: 2, email: 'seller@example.com', name: 'Seller', role: 'seller', password: 'pass' }
     ];
     store.session.userId = null;
@@ -47,16 +49,32 @@
 
     // Products
     const demo = [
-      { title: 'Wireless Headphones', price: 79.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1518441902110-9f89e75fdb38?q=80&w=1200&auto=format&fit=crop', stock: 24 },
-      { title: 'Smart Watch Series 5', price: 149.00, category: 'Wearables', image: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1200&auto=format&fit=crop', stock: 18 },
-      { title: 'Ergonomic Office Chair', price: 229.00, category: 'Home & Office', image: 'https://images.unsplash.com/photo-1582582494700-9a63f9e6df08?q=80&w=1200&auto=format&fit=crop', stock: 12 },
-      { title: 'Gaming Mouse Pro', price: 39.00, category: 'Electronics', image: 'https://images.unsplash.com/photo-1593642532400-2682810df593?q=80&w=1200&auto=format&fit=crop', stock: 40 },
-      { title: 'Yoga Mat Eco', price: 25.00, category: 'Sports', image: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?q=80&w=1200&auto=format&fit=crop', stock: 50 },
-      { title: 'Stainless Water Bottle', price: 19.00, category: 'Outdoors', image: 'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?q=80&w=1200&auto=format&fit=crop', stock: 70 },
-      { title: 'Bluetooth Speaker', price: 59.00, category: 'Electronics', image: 'https://images.unsplash.com/photo-1585386959984-a41552231658?q=80&w=1200&auto=format&fit=crop', stock: 33 },
-      { title: 'Running Shoes', price: 89.00, category: 'Sports', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop', stock: 26 }
+      { title: 'Wireless Headphones', price: 79.99, category: 'Electronics', seed: 'headphones' },
+      { title: 'Smart Watch Series 5', price: 149.00, category: 'Wearables', seed: 'smartwatch' },
+      { title: 'Ergonomic Office Chair', price: 229.00, category: 'Home & Office', seed: 'officechair' },
+      { title: 'Gaming Mouse Pro', price: 39.00, category: 'Electronics', seed: 'gamingmouse' },
+      { title: 'Yoga Mat Eco', price: 25.00, category: 'Sports', seed: 'yogamat' },
+      { title: 'Stainless Water Bottle', price: 19.00, category: 'Outdoors', seed: 'waterbottle' },
+      { title: 'Bluetooth Speaker', price: 59.00, category: 'Electronics', seed: 'speaker' },
+      { title: 'Running Shoes', price: 89.00, category: 'Sports', seed: 'runningshoes' }
     ];
-    store.products = demo.map((p, i) => ({ id: i + 1, description: `${p.title} description`, rating: 4, ...p }));
+    store.products = demo.map((p, i) => ({
+      id: i + 1,
+      description: `${p.title} description`,
+      rating: 4,
+      image: (i === 0) ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop' :
+             (i === 1) ? 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop' :
+             (i === 2) ? 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop' :
+             (i === 3) ? 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=600&fit=crop' :
+             (i === 4) ? 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop' :
+             (i === 5) ? 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&h=600&fit=crop' :
+             (i === 6) ? 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&h=600&fit=crop' :
+             'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=600&fit=crop',
+      title: p.title,
+      price: p.price,
+      category: p.category,
+      stock: [24,18,12,40,50,70,33,26][i]
+    }));
     store.seq.product = demo.length + 1;
     store.reviews = [
       { id: 1, productId: 1, userId: 1, rating: 5, comment: 'Great sound and battery!' }
@@ -65,6 +83,94 @@
     store.orders = [];
     store.seq.order = 1;
     store.cart = [];
+    store.version = 6;
+  }
+
+  function migrate() {
+    // Initialize version if missing
+    if (!store.version) store.version = 1;
+
+    // v2: ensure all product images use a reliable source
+    if (store.version < 2) {
+      store.products = store.products.map(p => ({
+        ...p,
+        image: p.image && p.image.startsWith('http') ? p.image : `https://picsum.photos/seed/p${p.id}/800/600`
+      }));
+      store.version = 2;
+      save();
+    }
+
+    // v3: move to local assets to avoid external loading issues
+    if (store.version < 3) {
+      store.products = store.products.map((p, idx) => ({
+        ...p,
+        image: `assets/p${((idx % 8) + 1)}.svg`
+      }));
+      store.version = 3;
+      save();
+    }
+
+    // v4: force-correct any bad asset paths and unify to local assets
+    if (store.version < 4) {
+      store.products = store.products.map((p, idx) => ({
+        ...p,
+        image: `assets/p${((idx % 8) + 1)}.svg`
+      }));
+      store.version = 4;
+      save();
+    }
+
+    // v5: introduce imageLocal and prefer external photo first
+    if (store.version < 5) {
+      store.products = store.products.map((p, idx) => {
+        const local = `assets/p${((idx % 8) + 1)}.svg`;
+        const seed = encodeURIComponent((p.title || `product${idx}`).replace(/\s+/g, '')) + idx;
+        const external = `https://picsum.photos/seed/${seed}/800/600`;
+        // If current p.image is an external URL, keep it; otherwise use external and store local as fallback
+        const isExternal = typeof p.image === 'string' && /^https?:\/\//.test(p.image);
+        return {
+          ...p,
+          imageLocal: p.imageLocal || local,
+          image: isExternal ? p.image : external
+        };
+      });
+      store.version = 5;
+      save();
+    }
+
+    // v6: force specific items to use local images (to avoid flaky remotes)
+    if (store.version < 6) {
+      store.products = store.products.map(p => {
+        const t = (p.title || '').toLowerCase();
+        if (t.includes('wireless headphones')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('smart watch')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('ergonomic office chair')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('gaming mouse')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('yoga mat')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('water bottle')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('bluetooth speaker')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&h=600&fit=crop' };
+        }
+        if (t.includes('running shoes')) {
+          return { ...p, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=600&fit=crop' };
+        }
+        return p;
+      });
+      store.version = 6;
+      save();
+    }
   }
 
   load();
@@ -105,13 +211,13 @@
   function renderHome() {
     root.innerHTML = `
       <section class="panel stack">
-        <div class="card center" style="height: 160px">
-          <div>
-            <h1>Discover products you love</h1>
-            <p class="muted">Fast search, clear details, simple checkout.</p>
-            <div class="row" style="justify-content:center;margin-top:8px;">
+        <div class="card center" style="height: 160px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop') center/cover; position: relative;">
+          <div style="position: relative; z-index: 2; padding: 20px; border-radius: 12px;">
+            <h1 style="margin: 0 0 8px 0; color: #ffffff;">Discover products you love</h1>
+            <p style="margin: 0 0 16px 0; color: #e6eaf2; font-size: 16px;">Fast search, clear details, simple checkout.</p>
+            <div class="row" style="justify-content:center;gap:12px;">
               <a href="#catalog" class="btn btn-primary">Shop now</a>
-              <a href="#seller" class="btn btn-ghost">Sell on Shoply</a>
+              <a href="#seller" class="btn" style="background: rgba(255,255,255,0.9); color: #1a1f2e; border: none;">Sell on GaniMart</a>
             </div>
           </div>
         </div>
@@ -124,6 +230,7 @@
     const grid = document.getElementById('featuredGrid');
     grid.innerHTML = store.products.slice(0, 8).map(renderProductCard).join('');
     bindProductCardActions(grid);
+    bindImageFallbacks(grid);
   }
 
   function renderCatalog() {
@@ -175,6 +282,7 @@
       resultsCount.textContent = `${list.length} results`;
       grid.innerHTML = list.map(renderProductCard).join('');
       bindProductCardActions(grid);
+      bindImageFallbacks(grid);
     }
 
     applyBtn.addEventListener('click', refresh);
@@ -184,7 +292,7 @@
   function renderProductCard(p) {
     return `
       <div class="card product-card" data-id="${p.id}">
-        <img src="${p.image}" alt="${p.title}" />
+        <img src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" />
         <h4>${p.title}</h4>
         <div class="row" style="justify-content:space-between;align-items:center;">
           <span class="price">${formatPrice(p.price)}</span>
@@ -216,7 +324,7 @@
     root.innerHTML = `
       <section class="split">
         <div class="panel">
-          <img src="${p.image}" alt="${p.title}" style="width:100%;border-radius:12px;max-height:420px;object-fit:cover;" />
+          <img id="detailImg" src="${p.image}" alt="${p.title}" referrerpolicy="no-referrer" style="width:100%;border-radius:12px;max-height:420px;object-fit:cover;" />
         </div>
         <div class="stack">
           <div class="panel">
@@ -242,6 +350,9 @@
         </div>
       </section>
     `;
+    // detail image fallback
+    const dimg = document.getElementById('detailImg');
+    if (dimg) attachImgFallback(dimg, p.title);
     document.getElementById('addBtn').addEventListener('click', () => {
       const qty = Math.max(1, Number(document.getElementById('qty').value) || 1);
       addToCart(id, qty);
@@ -434,7 +545,7 @@
         <div class="panel">
           <h3>Login</h3>
           <div class="form">
-            <div class="field"><label>Email</label><input id="loginEmail" placeholder="alice@example.com" value="alice@example.com" /></div>
+            <div class="field"><label>Email</label><input id="loginEmail" placeholder="gani@example.com" value="gani@example.com" /></div>
             <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="pass" value="pass" /></div>
             <button id="loginBtn" class="btn btn-primary">Login</button>
           </div>
@@ -536,13 +647,15 @@
     const grid = document.getElementById('sellerGrid');
     grid.innerHTML = myProducts.map(renderProductCard).join('');
     bindProductCardActions(grid);
+    bindImageFallbacks(grid);
 
     document.getElementById('addProduct').addEventListener('click', () => {
       const title = document.getElementById('pTitle').value.trim();
       const price = Number(document.getElementById('pPrice').value);
       const stock = Number(document.getElementById('pStock').value);
       const category = document.getElementById('pCat').value.trim() || 'Misc';
-      const image = document.getElementById('pImg').value.trim() || 'https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1200&auto=format&fit=crop';
+      const provided = document.getElementById('pImg').value.trim();
+      const image = provided || `https://picsum.photos/seed/product${store.seq.product}/800/600`;
       const description = document.getElementById('pDesc').value.trim();
       if (!title || !price || price < 0) { alert('Provide title and valid price'); return; }
       const id = store.seq.product++;
@@ -558,6 +671,24 @@
     save();
   }
 
+  // Image fallback utilities
+  function makePlaceholder(text) {
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'>
+      <rect width='100%' height='100%' fill='#1b2030'/>
+      <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='#a7b0c0' font-family='Inter, Arial' font-size='20'>${(text || 'Image not available').slice(0,40)}</text>
+    </svg>`;
+    return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+  }
+  function attachImgFallback(img, title) {
+    try { img.referrerPolicy = 'no-referrer'; } catch (_) {}
+    img.addEventListener('error', () => {
+      img.src = makePlaceholder(title || img.alt || '');
+    });
+  }
+  function bindImageFallbacks(container) {
+    container.querySelectorAll('img').forEach(img => attachImgFallback(img, img.getAttribute('alt') || ''));
+  }
+
   // Search
   if (searchBtn) searchBtn.addEventListener('click', () => { location.hash = '#catalog'; });
   if (searchInput) searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') location.hash = '#catalog'; });
@@ -567,4 +698,18 @@
   navigate(location.hash || '#home');
 })();
 
+
+// Reset demo handler
+document.addEventListener('DOMContentLoaded', () => {
+  const reset = document.getElementById('resetDemo');
+  if (reset) {
+    reset.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (confirm('Reset demo data?')) {
+        localStorage.removeItem('ganimart');
+        location.reload();
+      }
+    });
+  }
+});
 
