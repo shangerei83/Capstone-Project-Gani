@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Order Placed - GaniMart</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="panel stack">
+        <div class="card center" style="height: 220px;">
+            <div>
+                <h2>Thank you for your order!</h2>
+                <p class="muted">Your order number is <strong th:text="${order.orderNumber}">ABC12345</strong>.</p>
+                <a th:href="@{/catalog}" class="btn btn-primary" style="margin-top: 12px;">Continue Shopping</a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

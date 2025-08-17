@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>About - GaniMart</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="panel stack">
+            <div class="card center" style="height: 120px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=400&fit=crop') center/cover;">
+                <div style="position: relative; z-index: 2;">
+                    <h1 style="margin: 0; color: #ffffff;">About GaniMart</h1>
+                    <p style="margin: 8px 0 0 0; color: #e6eaf2;">Your trusted online marketplace</p>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Our Story</h3>
+                <p>GaniMart was founded with a simple mission: to create a seamless online shopping experience that connects buyers with quality products and reliable sellers. We believe that everyone deserves access to a diverse marketplace where they can discover unique items and make informed purchasing decisions.</p>
+                
+                <p>Since our inception, we've been committed to building a platform that prioritizes user experience, security, and community. Our team works tirelessly to ensure that every transaction is smooth, every product is authentic, and every customer feels valued.</p>
+            </div>
+            
+            <div class="stack">
+                <h3>Our Mission</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div class="card center" style="height: 100px;">
+                        <h4>Quality</h4>
+                        <p class="muted">We curate only the best products</p>
+                    </div>
+                    <div class="card center" style="height: 100px;">
+                        <h4>Security</h4>
+                        <p class="muted">Your safety is our priority</p>
+                    </div>
+                    <div class="card center" style="height: 100px;">
+                        <h4>Community</h4>
+                        <p class="muted">Building connections through commerce</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Why Choose GaniMart?</h3>
+                <div class="split">
+                    <div>
+                        <h4>For Buyers</h4>
+                        <ul>
+                            <li>Wide selection of products</li>
+                            <li>Secure payment options</li>
+                            <li>Fast and reliable shipping</li>
+                            <li>Customer support 24/7</li>
+                            <li>Verified seller network</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>For Sellers</h4>
+                        <ul>
+                            <li>Easy product listing</li>
+                            <li>Reach global customers</li>
+                            <li>Secure payment processing</li>
+                            <li>Analytics and insights</li>
+                            <li>Marketing tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Our Values</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="card center" style="height: 80px;">
+                        <h4>Transparency</h4>
+                    </div>
+                    <div class="card center" style="height: 80px;">
+                        <h4>Innovation</h4>
+                    </div>
+                    <div class="card center" style="height: 80px;">
+                        <h4>Integrity</h4>
+                    </div>
+                    <div class="card center" style="height: 80px;">
+                        <h4>Excellence</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Get in Touch</h3>
+                <p>Have questions or want to learn more about GaniMart? We'd love to hear from you!</p>
+                <div class="row" style="justify-content: center; gap: 12px;">
+                    <a th:href="@{/contact}" class="btn btn-primary">Contact Us</a>
+                    <a th:href="@{/}" class="btn">Back to Home</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

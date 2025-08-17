@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title th:text="${product.title + ' - GaniMart'}">Product Details</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="panel stack">
+            <!-- Breadcrumb -->
+            <div class="row" style="align-items: center; gap: 8px;">
+                <a th:href="@{/}" class="muted">Home</a>
+                <span class="muted">></span>
+                <a th:href="@{/catalog}" class="muted">Catalog</a>
+                <span class="muted">></span>
+                <a th:href="@{/catalog/category/{id}(id=${product.category.id})}" class="muted" th:text="${product.category.name}">Category</a>
+                <span class="muted">></span>
+                <span th:text="${product.title}">Product</span>
+            </div>
+            
+            <!-- Product Details -->
+            <div class="split">
+                <!-- Product Image -->
+                <div class="card center" style="height: 400px;">
+                    <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" th:alt="${product.title}" 
+                         style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    <div th:unless="${product.imageUrl}" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <span class="muted">No image available</span>
+                    </div>
+                </div>
+                
+                <!-- Product Info -->
+                <div class="stack">
+                    <div>
+                        <h1 th:text="${product.title}">Product Title</h1>
+                        <p class="muted" th:text="${product.description}">Product description</p>
+                    </div>
+                    
+                    <!-- Price -->
+                    <div class="card">
+                        <div class="row" style="align-items: center; gap: 16px;">
+                            <span class="price" style="font-size: 24px;" th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}">$0.00</span>
+                            <span th:if="${product.originalPrice != null and product.originalPrice > product.price}" 
+                                  style="text-decoration: line-through; color: var(--muted);" 
+                                  th:text="${'$' + #numbers.formatDecimal(product.originalPrice, 1, 2)}">$0.00</span>
+                            <span th:if="${product.originalPrice != null and product.originalPrice > product.price}" 
+                                  class="pill" style="background: var(--success); color: white;"
+                                  th:text="${'-' + #numbers.formatDecimal(product.getDiscountPercentage(), 1, 0) + '%'}">-20%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Rating -->
+                    <div class="card">
+                        <div class="row" style="align-items: center; gap: 8px;">
+                            <span class="rating" th:text="${'★'.repeat(product.averageRating.intValue()) + '☆'.repeat(5 - product.averageRating.intValue())}">★★★★☆</span>
+                            <span th:text="${product.averageRating + '/5'}">4.0/5</span>
+                            <span class="muted" th:text="${'(' + product.reviewCount + ' reviews)'}">(10 reviews)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Stock Status -->
+                    <div class="card">
+                        <div class="row" style="align-items: center; gap: 8px;">
+                            <span th:if="${product.stockQuantity > 0}" class="pill" style="background: var(--success); color: white;">
+                                In Stock (th:text="${product.stockQuantity}">10</span>
+                            <span th:unless="${product.stockQuantity > 0}" class="pill" style="background: var(--danger); color: white;">
+                                Out of Stock</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Add to Cart -->
+                    <div class="card" th:if="${product.stockQuantity > 0}">
+                        <!-- For authenticated users -->
+                        <form th:action="@{/cart/add}" method="post" class="form" sec:authorize="isAuthenticated()">
+                            <input type="hidden" name="productId" th:value="${product.id}" />
+                            <div class="row">
+                                <div class="field">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                           th:max="${product.stockQuantity}" style="width: 80px;" />
+                                </div>
+                                <div class="field">
+                                    <label>&nbsp;</label>
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- For non-authenticated users -->
+                        <div class="center" style="padding: 20px;" sec:authorize="!isAuthenticated()">
+                            <p class="muted">Please login to add this item to your cart</p>
+                            <a th:href="@{/auth/login}" class="btn btn-primary">Login to Add</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Meta -->
+                    <div class="card">
+                        <div class="stack">
+                            <div class="row" style="justify-content: space-between;">
+                                <span class="muted">Category:</span>
+                                <a th:href="@{/catalog/category/{id}(id=${product.category.id})}" th:text="${product.category.name}">Category</a>
+                            </div>
+                            <div class="row" style="justify-content: space-between;">
+                                <span class="muted">Seller:</span>
+                                <span th:text="${product.seller.firstName + ' ' + product.seller.lastName}">Seller Name</span>
+                            </div>
+                            <div class="row" style="justify-content: space-between;">
+                                <span class="muted">Views:</span>
+                                <span th:text="${product.viewCount}">0</span>
+                            </div>
+                            <div class="row" style="justify-content: space-between;">
+                                <span class="muted">Added:</span>
+                                <span th:text="${#temporals.format(product.createdAt, 'MMM dd, yyyy')}">Jan 01, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Description -->
+            <div class="stack">
+                <h3>Product Description</h3>
+                <div class="card">
+                    <p th:text="${product.description}">Detailed product description...</p>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="stack">
+                <h3>Customer Reviews</h3>
+                <div th:if="${product.reviews != null and !product.reviews.isEmpty()}" class="stack">
+                    <div th:each="review : ${product.reviews}" th:object="${review}" class="card">
+                        <div class="row" style="justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 th:text="${review.reviewTitle}">Review Title</h4>
+                                <p th:text="${review.reviewContent}">Review content...</p>
+                                <div class="row" style="align-items: center; gap: 8px; margin-top: 8px;">
+                                    <span class="rating" th:text="${review.getRatingStars()}">★★★★☆</span>
+                                    <span class="muted" th:text="${review.user.firstName + ' ' + review.user.lastName}">User Name</span>
+                                    <span class="muted" th:text="${#temporals.format(review.createdAt, 'MMM dd, yyyy')}">Jan 01, 2024</span>
+                                </div>
+                            </div>
+                            <div th:if="${review.isVerifiedPurchase}" class="pill" style="background: var(--success); color: white;">
+                                Verified Purchase
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:unless="${product.reviews != null and !product.reviews.isEmpty()}" class="card center" style="height: 100px;">
+                    <p class="muted">No reviews yet. Be the first to review this product!</p>
+                </div>
+            </div>
+            
+            <!-- Related Products -->
+            <div class="stack">
+                <h3>Related Products</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <!-- This would be populated by related products service -->
+                    <div class="card center" style="height: 120px;">
+                        <p class="muted">Related products will appear here</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="row" style="justify-content: center; gap: 16px;">
+                <a th:href="@{/catalog}" class="btn btn-ghost">Back to Catalog</a>
+                <a th:href="@{/}" class="btn btn-ghost">Back to Home</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

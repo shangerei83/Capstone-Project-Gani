@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title th:text="${title} ? ${title} + ' - GaniMart' : 'Catalog - GaniMart'">Catalog</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="panel stack">
+            <!-- Header -->
+            <div class="card center" style="height: 100px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop') center/cover;">
+                <div style="position: relative; z-index: 2;">
+                    <h1 style="margin: 0; color: #ffffff;" th:text="${selectedCategory != null ? selectedCategory.name : 'Product Catalog'}">Product Catalog</h1>
+                    <p style="margin: 8px 0 0 0; color: #e6eaf2;" th:if="${selectedCategory != null}">Browse <span th:text="${selectedCategory.name}"></span> products</p>
+                </div>
+            </div>
+            
+            <!-- Search and Filters -->
+            <div class="card">
+                <form th:action="@{/catalog}" method="get" class="form">
+                    <div class="row">
+                        <div class="field" style="flex: 1;">
+                            <label for="search">Search Products</label>
+                            <input type="text" id="search" name="q" th:value="${searchQuery}" placeholder="Search by name or description..." />
+                        </div>
+                        <div class="field">
+                            <label for="category">Category</label>
+                            <select id="category" name="categoryId">
+                                <option value="">All Categories</option>
+                                <option th:each="cat : ${categories}" 
+                                        th:value="${cat.id}" 
+                                        th:text="${cat.name}">Category</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="minPrice">Min Price</label>
+                            <input type="number" id="minPrice" name="minPrice" th:value="${minPrice}" min="0" step="0.01" />
+                        </div>
+                        <div class="field">
+                            <label for="maxPrice">Max Price</label>
+                            <input type="number" id="maxPrice" name="maxPrice" th:value="${maxPrice}" min="0" step="0.01" />
+                        </div>
+                        <div class="field">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Results Summary -->
+            <div class="row" style="justify-content: space-between; align-items: center;">
+                <div>
+                    <span class="muted">Showing <span th:text="${products.size()}">0</span> products</span>
+                    <span th:if="${searchQuery}" class="muted" style="margin-left: 8px;"> for "<span th:text="${searchQuery}"></span>"</span>
+                    <span th:if="${selectedCategory != null}" class="muted" style="margin-left: 8px;"> in <span th:text="${selectedCategory.name}"></span></span>
+                </div>
+                <div>
+                    <a th:href="@{/catalog}" class="btn btn-ghost" th:if="${searchQuery != null or selectedCategory != null or minPrice != null or maxPrice != null}">Clear Filters</a>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div th:if="${products != null and !products.isEmpty()}" class="grid" id="productsGrid">
+                <div th:each="product : ${products}" th:object="${product}" class="card product-card">
+                    <img th:src="${product.imageUrl}" th:alt="${product.title}" referrerpolicy="no-referrer" />
+                    <h4 th:text="${product.title}">Product Title</h4>
+                    <p class="muted" th:text="${product.description}" style="font-size: 13px; margin: 4px 0;"></p>
+                    <div class="row" style="justify-content: space-between; align-items: center;">
+                        <span class="price">$<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}">0.00</span></span>
+                        <span class="rating">★★★★★</span>
+                    </div>
+                    <div class="row" style="margin-top: 8px;">
+                        <a class="btn" th:href="@{/product/{id}(id=${product.id})}">View</a>
+                        <form th:action="@{/cart/add}" method="post" style="display: inline;" sec:authorize="isAuthenticated()">
+                            <input type="hidden" name="productId" th:value="${product.id}" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </form>
+                        <a th:href="@{/auth/login}" class="btn btn-primary" sec:authorize="!isAuthenticated()">Login to Add</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Results -->
+            <div th:if="${products != null and products.isEmpty()}" class="card center" style="height: 200px;">
+                <div>
+                    <h3>No products found</h3>
+                    <p class="muted">Try adjusting your search criteria or browse all categories</p>
+                    <div class="row" style="justify-content: center; gap: 12px; margin-top: 16px;">
+                        <a th:href="@{/catalog}" class="btn btn-primary">Browse All Products</a>
+                        <a th:href="@{/}" class="btn">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories Sidebar -->
+            <div class="split">
+                <div>
+                    <h3>Categories</h3>
+                    <div class="stack">
+                        <a th:each="cat : ${categories}" 
+                           th:href="@{/catalog/category/{id}(id=${cat.id})}"
+                           class="card" 
+                           style="text-decoration: none; cursor: pointer;">
+                            <h4 th:text="${cat.name}">Category</h4>
+                            <p class="muted" th:text="${cat.description}">Category description</p>
+                            <span class="pill" th:text="${'0 products'}">0 products</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Quick Actions</h3>
+                    <div class="stack">
+                        <a th:href="@{/}" class="btn btn-ghost">Back to Home</a>
+                        <a th:href="@{/cart}" class="btn btn-ghost" sec:authorize="isAuthenticated()">View Cart</a>
+                        <a th:href="@{/seller}" class="btn btn-ghost" sec:authorize="hasRole('SELLER')">Seller Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

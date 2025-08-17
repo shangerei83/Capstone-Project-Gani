@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Login - GaniMart</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="auth-container">
+            <div class="panel">
+                <h2 style="text-align: center; margin-bottom: 24px;">Welcome Back</h2>
+                
+                <!-- Error Message -->
+                <div th:if="${param.error}" class="error-message">
+                    Invalid email or password. Please try again.
+                </div>
+                
+                <!-- Success Message -->
+                <div th:if="${param.logout}" class="success-message">
+                    You have been logged out successfully.
+                </div>
+                
+                <!-- Login Form -->
+                <form th:action="@{/auth/login}" method="post" class="form">
+                    <div class="field">
+                        <label for="username">Email Address</label>
+                        <input type="email" id="username" name="username" required 
+                               placeholder="Enter your email address" />
+                    </div>
+                    
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Enter your password" />
+                    </div>
+                    
+                    <div class="field">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" name="remember-me" />
+                            <span>Remember me</span>
+                        </label>
+                    </div>
+                    
+                    <div class="field">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Additional Links -->
+                <div style="text-align: center; margin-top: 24px;">
+                    <p class="muted">Don't have an account?</p>
+                    <a th:href="@{/auth/register}" class="btn btn-ghost" style="width: 100%;">
+                        Create Account
+                    </a>
+                </div>
+                
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="#" class="muted" style="text-decoration: none;">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

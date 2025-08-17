@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Home - GaniMart</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="panel stack">
+            <!-- Hero Section -->
+            <div class="card center" style="height: 160px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop') center/cover; position: relative;">
+                <div style="position: relative; z-index: 2; padding: 20px; border-radius: 12px;">
+                    <h1 style="margin: 0 0 8px 0; color: #ffffff;">Discover products you love</h1>
+                    <p style="margin: 0 0 16px 0; color: #e6eaf2; font-size: 16px;">Fast search, clear details, simple checkout.</p>
+                    <div class="row" style="justify-content:center;gap:12px;">
+                        <a th:href="@{/catalog}" class="btn btn-primary">Shop now</a>
+                        <a th:href="@{/auth/register}" class="btn" style="background: rgba(255,255,255,0.9); color: #1a1f2e; border: none;">Sell on GaniMart</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Featured Products -->
+            <div class="stack">
+                <h3>Featured Products</h3>
+                <div class="grid" id="featuredGrid">
+                    <!-- Featured products will be displayed here -->
+                    <div th:each="product : ${featuredProducts}" th:object="${product}" class="card product-card">
+                        <img th:src="${product.imageUrl}" th:alt="${product.title}" referrerpolicy="no-referrer" />
+                        <h4 th:text="${product.title}">Product Title</h4>
+                        <div class="row" style="justify-content:space-between;align-items:center;">
+                            <span class="price" th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}">$0.00</span>
+                            <span class="rating">★★★★★</span>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <a class="btn" th:href="@{/product/{productId}(productId=${product.id})}">View</a>
+                            <!-- For authenticated users -->
+                            <form th:action="@{/cart/add}" method="post" style="display: inline;" sec:authorize="isAuthenticated()">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </form>
+                            <!-- For non-authenticated users -->
+                            <a th:href="@{/auth/login}" class="btn btn-primary" sec:authorize="!isAuthenticated()">Login to Add</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories Quick Links -->
+            <div class="stack">
+                <h3>Shop by Category</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <a th:each="category : ${categories}" th:href="@{/catalog}" class="card center" style="height: 120px; cursor: pointer; text-decoration: none; color: inherit;">
+                        <h4 th:text="${category.name}">Category</h4>
+                        <p class="muted" th:text="${category.description}">Category description</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

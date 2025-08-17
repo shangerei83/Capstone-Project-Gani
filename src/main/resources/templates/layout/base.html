@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} ? ${title} + ' - GaniMart' : 'GaniMart - Online Store Marketplace'">GaniMart</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Thymeleaf fragments for head -->
+    <th:block th:fragment="head"></th:block>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-bar">
+            <a class="logo" th:href="@{/}">GaniMart</a>
+            
+            <!-- Search Form -->
+            <div class="search">
+                <form th:action="@{/catalog}" method="get">
+                    <input type="search" name="q" placeholder="Search products" />
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="nav">
+                <a th:href="@{/catalog}">Catalog</a>
+                
+                <!-- Cart -->
+                <a th:href="${#authorization.expression('isAuthenticated()')} ? @{/cart} : @{/auth/login}">
+                    Cart <span id="cart-item-count" class="badge" th:text="${cartItemCount ?: 0}">0</span>
+                </a>
+                
+                <!-- Debug Info -->
+                <div style="font-size: 12px; color: #666; margin: 0 10px;">
+                    <span sec:authorize="isAuthenticated()">Auth: Logged in as <span sec:authentication="name"></span></span>
+                    <span sec:authorize="!isAuthenticated()">Auth: Not logged in</span>
+                </div>
+                
+                <!-- Authentication Links -->
+                <div sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/auth/login}">Login</a>
+                    <a th:href="@{/auth/register}">Register</a>
+                </div>
+                
+                <!-- User Menu when logged in -->
+                <div sec:authorize="isAuthenticated()">
+                    <a th:href="@{/profile}">Profile</a>
+                    <a th:href="@{/auth/logout}">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" id="appRoot">
+        <!-- Thymeleaf layout fragments for main content -->
+        <div layout:fragment="content">
+            <!-- This will be replaced by specific page content -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div>© <span th:text="${#dates.year(#dates.createNow())}">2024</span> GaniMart. Online Store Marketplace.</div>
+            <div class="footer-links">
+                <a href="#">Help</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a th:href="@{/}">Home</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/cart.js}"></script>
+    <th:block th:fragment="scripts"></th:block>
+</body>
+</html>

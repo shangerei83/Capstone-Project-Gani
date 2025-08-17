@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Contact - GaniMart</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="panel stack">
+            <div class="card center" style="height: 120px; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&h=400&fit=crop') center/cover;">
+                <div style="position: relative; z-index: 2;">
+                    <h1 style="margin: 0; color: #ffffff;">Contact Us</h1>
+                    <p style="margin: 8px 0 0 0; color: #e6eaf2;">We're here to help</p>
+                </div>
+            </div>
+            
+            <div class="split">
+                <div class="stack">
+                    <h3>Get in Touch</h3>
+                    <p>Have a question, suggestion, or need assistance? We'd love to hear from you. Our team is here to help with any inquiries about our platform, products, or services.</p>
+                    
+                    <div class="stack">
+                        <h4>Contact Information</h4>
+                        <div class="card">
+                            <p><strong>Email:</strong> support@ganimart.com</p>
+                            <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                            <p><strong>Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM EST</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stack">
+                        <h4>Office Address</h4>
+                        <div class="card">
+                            <p>GaniMart Headquarters</p>
+                            <p>123 Commerce Street</p>
+                            <p>Business District, NY 10001</p>
+                            <p>United States</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stack">
+                    <h3>Send us a Message</h3>
+                    <form class="form" th:action="@{/auth/login}" method="get">
+                        <div class="field">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required />
+                        </div>
+                        
+                        <div class="field">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+                        
+                        <div class="field">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="field">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Please describe your inquiry in detail..."></textarea>
+                        </div>
+                        
+                        <div class="field">
+                            <label>
+                                <input type="checkbox" name="newsletter" />
+                                Subscribe to our newsletter for updates and special offers
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Go to Login</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Frequently Asked Questions</h3>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                    <div class="card">
+                        <h4>How do I create an account?</h4>
+                        <p class="muted">Click the "Register" button in the top navigation and follow the simple registration process.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>How can I become a seller?</h4>
+                        <p class="muted">Register as a seller and complete the verification process to start listing your products.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>What payment methods do you accept?</h4>
+                        <p class="muted">We accept major credit cards, PayPal, and other secure payment methods.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>How long does shipping take?</h4>
+                        <p class="muted">Shipping times vary by location and method, typically 3-7 business days.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>What is your return policy?</h4>
+                        <p class="muted">We offer a 30-day return policy for most items in their original condition.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>How do I track my order?</h4>
+                        <p class="muted">You can track your order in your account dashboard or use the tracking number provided.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stack">
+                <h3>Connect With Us</h3>
+                <div class="row" style="justify-content: center; gap: 16px;">
+                    <a href="#" class="btn btn-ghost">Facebook</a>
+                    <a href="#" class="btn btn-ghost">Twitter</a>
+                    <a href="#" class="btn btn-ghost">Instagram</a>
+                    <a href="#" class="btn btn-ghost">LinkedIn</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

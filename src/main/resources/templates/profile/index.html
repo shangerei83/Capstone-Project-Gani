@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>My Profile</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="container">
+            <div class="stack">
+                <div class="panel row" style="justify-content:space-between;align-items:center;">
+                    <div>
+                        <h3>Welcome, <span sec:authentication="name">User</span></h3>
+                        <div class="muted">Role: <span sec:authentication="principal.authorities">ROLE_USER</span></div>
+                    </div>
+                    <div class="row">
+                        <a class="btn" th:href="@{/}">Home</a>
+                        <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-ghost">Logout</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- User Information -->
+                <div class="panel">
+                    <h4>Account Information</h4>
+                    <div class="row" style="margin-top: 16px;">
+                        <div style="flex: 1;">
+                            <p><strong>Email:</strong> <span sec:authentication="name">user@example.com</span></p>
+                            <p><strong>Member Since:</strong> <span>Demo Account</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Addresses -->
+                <div class="panel">
+                    <h4>Addresses</h4>
+                    <div class="muted" style="margin-top: 16px;">(Demo) Add addresses at checkout</div>
+                </div>
+                
+                <!-- Order History -->
+                <div class="panel">
+                    <h4>Order History</h4>
+                    <div class="muted" style="margin-top: 16px;">(Demo) Your order history will appear here</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

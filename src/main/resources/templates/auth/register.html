@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Register - GaniMart</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="auth-container">
+            <div class="panel">
+                <h2 style="text-align: center; margin-bottom: 24px;">Create Account</h2>
+                
+                <!-- Error Message -->
+                <div th:if="${error}" class="error-message" th:text="${error}">
+                    Error message here
+                </div>
+                
+                <!-- Success Message -->
+                <div th:if="${success}" class="success-message" th:text="${success}">
+                    Success message here
+                </div>
+                
+                <!-- Registration Form -->
+                <form th:action="@{/auth/register}" method="post" class="form">
+                    <div class="row">
+                        <div class="field">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required 
+                                   placeholder="Enter your first name" />
+                        </div>
+                        
+                        <div class="field">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required 
+                                   placeholder="Enter your last name" />
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required 
+                               placeholder="Enter your email address" />
+                    </div>
+                    
+                    <div class="field">
+                        <label for="phone">Phone Number (Optional)</label>
+                        <input type="tel" id="phone" name="phone" 
+                               placeholder="Enter your phone number" />
+                    </div>
+                    
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Create a strong password" />
+                        <small class="muted">Password must be at least 6 characters long</small>
+                    </div>
+                    
+                    <div class="field">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required 
+                               placeholder="Confirm your password" />
+                    </div>
+                    
+                    <div class="field">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" name="termsAccepted" required />
+                            <span>I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a></span>
+                        </label>
+                    </div>
+                    
+                    <div class="field">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Additional Links -->
+                <div style="text-align: center; margin-top: 24px;">
+                    <p class="muted">Already have an account?</p>
+                    <a th:href="@{/auth/login}" class="btn btn-ghost" style="width: 100%;">
+                        Sign In
+                    </a>
+                </div>
+                
+                <!-- Benefits -->
+                <div style="margin-top: 24px; padding: 16px; background: var(--panel-2); border-radius: 8px;">
+                    <h4 style="margin: 0 0 12px 0;">Why create an account?</h4>
+                    <ul style="margin: 0; padding-left: 20px; color: var(--muted);">
+                        <li>Save your favorite products</li>
+                        <li>Track your order history</li>
+                        <li>Get personalized recommendations</li>
+                        <li>Faster checkout process</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
