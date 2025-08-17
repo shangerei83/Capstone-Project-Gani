@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +25,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "product_images")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductImage {
 
     @Id
@@ -74,9 +82,7 @@ public class ProductImage {
         PRODUCT, THUMBNAIL, GALLERY, BANNER
     }
 
-    // Constructors
-    public ProductImage() {}
-
+    // Custom constructors
     public ProductImage(String imageUrl, Product product) {
         this.imageUrl = imageUrl;
         this.product = product;
@@ -85,103 +91,6 @@ public class ProductImage {
     public ProductImage(String imageUrl, String altText, Product product) {
         this.imageUrl = imageUrl;
         this.altText = altText;
-        this.product = product;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getAltText() {
-        return altText;
-    }
-
-    public void setAltText(String altText) {
-        this.altText = altText;
-    }
-
-    public Boolean getIsPrimary() {
-        return isPrimary;
-    }
-
-    public void setIsPrimary(Boolean isPrimary) {
-        this.isPrimary = isPrimary;
-    }
-
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-
-    public ImageType getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(ImageType imageType) {
-        this.imageType = imageType;
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
         this.product = product;
     }
 

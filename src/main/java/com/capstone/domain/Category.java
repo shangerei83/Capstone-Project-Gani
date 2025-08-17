@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -23,6 +27,10 @@ import java.util.Set;
 @Entity
 @Table(name = "categories")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     @Id
@@ -68,9 +76,7 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products = new HashSet<>();
 
-    // Constructors
-    public Category() {}
-
+    // Custom constructors for category creation
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
@@ -82,95 +88,6 @@ public class Category {
         this.description = description;
         this.parentCategory = parentCategory;
         this.isActive = true;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Integer getDisplayOrder() {
-        return displayOrder;
-    }
-
-    public void setDisplayOrder(Integer displayOrder) {
-        this.displayOrder = displayOrder;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Category getParentCategory() {
-        return parentCategory;
-    }
-
-    public void setParentCategory(Category parentCategory) {
-        this.parentCategory = parentCategory;
-    }
-
-    public Set<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(Set<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
     // Helper methods

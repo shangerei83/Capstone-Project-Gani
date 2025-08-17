@@ -3,6 +3,10 @@ package com.capstone.domain;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +22,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "user_roles")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRole {
 
     @Id
@@ -44,9 +52,7 @@ public class UserRole {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    // Constructors
-    public UserRole() {}
-
+    // Custom constructors for user role creation
     public UserRole(User user, Role role) {
         this.user = user;
         this.role = role;
@@ -58,55 +64,6 @@ public class UserRole {
         this.role = role;
         this.assignedBy = assignedBy;
         this.isActive = true;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public LocalDateTime getAssignedAt() {
-        return assignedAt;
-    }
-
-    public void setAssignedAt(LocalDateTime assignedAt) {
-        this.assignedAt = assignedAt;
-    }
-
-    public User getAssignedBy() {
-        return assignedBy;
-    }
-
-    public void setAssignedBy(User assignedBy) {
-        this.assignedBy = assignedBy;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     // Helper methods

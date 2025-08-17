@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,6 +27,10 @@ import java.util.Set;
 @Entity
 @Table(name = "orders")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 
     @Id
@@ -91,150 +99,11 @@ public class Order {
         PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED
     }
 
-    // Constructors
-    public Order() {}
-
+    // Custom constructor for basic order creation
     public Order(String orderNumber, User user) {
         this.orderNumber = orderNumber;
         this.user = user;
         this.orderStatus = OrderStatus.PENDING;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
-    }
-
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
-    }
-
-    public BigDecimal getShippingAmount() {
-        return shippingAmount;
-    }
-
-    public void setShippingAmount(BigDecimal shippingAmount) {
-        this.shippingAmount = shippingAmount;
-    }
-
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(BigDecimal discountAmount) {
-        this.discountAmount = discountAmount;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public LocalDateTime getShippedAt() {
-        return shippedAt;
-    }
-
-    public void setShippedAt(LocalDateTime shippedAt) {
-        this.shippedAt = shippedAt;
-    }
-
-    public LocalDateTime getDeliveredAt() {
-        return deliveredAt;
-    }
-
-    public void setDeliveredAt(LocalDateTime deliveredAt) {
-        this.deliveredAt = deliveredAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Address getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
     }
 
     // Helper methods

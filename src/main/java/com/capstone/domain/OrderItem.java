@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,6 +26,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "order_items")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
 
     @Id
@@ -64,9 +72,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    // Constructors
-    public OrderItem() {}
-
+    // Custom constructor for order item creation
     public OrderItem(Integer quantity, BigDecimal price, Product product) {
         this.quantity = quantity;
         this.price = price;
@@ -74,26 +80,10 @@ public class OrderItem {
         this.totalPrice = price.multiply(new BigDecimal(quantity));
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
+    // Override Lombok setters for fields that need recalculation
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
         recalculateTotalPrice();
-    }
-
-    public BigDecimal getPrice() {
-        return price;
     }
 
     public void setPrice(BigDecimal price) {
@@ -101,61 +91,9 @@ public class OrderItem {
         recalculateTotalPrice();
     }
 
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
-    }
-
     public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
         recalculateTotalPrice();
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     // Helper methods

@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Positive;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,6 +26,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "payments")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -96,152 +104,13 @@ public class Payment {
         PENDING, PROCESSING, COMPLETED, FAILED, CANCELLED, REFUNDED, PARTIALLY_REFUNDED
     }
 
-    // Constructors
-    public Payment() {}
-
+    // Custom constructor for payment creation
     public Payment(String paymentReference, BigDecimal amount, PaymentMethod paymentMethod, Order order) {
         this.paymentReference = paymentReference;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.order = order;
         this.paymentStatus = PaymentStatus.PENDING;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPaymentReference() {
-        return paymentReference;
-    }
-
-    public void setPaymentReference(String paymentReference) {
-        this.paymentReference = paymentReference;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getGatewayResponse() {
-        return gatewayResponse;
-    }
-
-    public void setGatewayResponse(String gatewayResponse) {
-        this.gatewayResponse = gatewayResponse;
-    }
-
-    public String getGatewayErrorCode() {
-        return gatewayErrorCode;
-    }
-
-    public void setGatewayErrorCode(String gatewayErrorCode) {
-        this.gatewayErrorCode = gatewayErrorCode;
-    }
-
-    public String getGatewayErrorMessage() {
-        return gatewayErrorMessage;
-    }
-
-    public void setGatewayErrorMessage(String gatewayErrorMessage) {
-        this.gatewayErrorMessage = gatewayErrorMessage;
-    }
-
-    public LocalDateTime getProcessedAt() {
-        return processedAt;
-    }
-
-    public void setProcessedAt(LocalDateTime processedAt) {
-        this.processedAt = processedAt;
-    }
-
-    public LocalDateTime getFailedAt() {
-        return failedAt;
-    }
-
-    public void setFailedAt(LocalDateTime failedAt) {
-        this.failedAt = failedAt;
-    }
-
-    public LocalDateTime getRefundedAt() {
-        return refundedAt;
-    }
-
-    public void setRefundedAt(LocalDateTime refundedAt) {
-        this.refundedAt = refundedAt;
-    }
-
-    public BigDecimal getRefundAmount() {
-        return refundAmount;
-    }
-
-    public void setRefundAmount(BigDecimal refundAmount) {
-        this.refundAmount = refundAmount;
-    }
-
-    public String getRefundReason() {
-        return refundReason;
-    }
-
-    public void setRefundReason(String refundReason) {
-        this.refundReason = refundReason;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     // Helper methods

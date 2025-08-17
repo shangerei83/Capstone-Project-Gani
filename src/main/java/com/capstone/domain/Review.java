@@ -8,6 +8,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +28,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "reviews")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
 
     @Id
@@ -78,121 +86,7 @@ public class Review {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // Constructors
-    public Review() {}
 
-    public Review(String reviewTitle, String reviewContent, Integer rating, User user, Product product) {
-        this.reviewTitle = reviewTitle;
-        this.reviewContent = reviewContent;
-        this.rating = rating;
-        this.user = user;
-        this.product = product;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getReviewTitle() {
-        return reviewTitle;
-    }
-
-    public void setReviewTitle(String reviewTitle) {
-        this.reviewTitle = reviewTitle;
-    }
-
-    public String getReviewContent() {
-        return reviewContent;
-    }
-
-    public void setReviewContent(String reviewContent) {
-        this.reviewContent = reviewContent;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public Boolean getIsVerifiedPurchase() {
-        return isVerifiedPurchase;
-    }
-
-    public void setIsVerifiedPurchase(Boolean isVerifiedPurchase) {
-        this.isVerifiedPurchase = isVerifiedPurchase;
-    }
-
-    public Integer getHelpfulCount() {
-        return helpfulCount;
-    }
-
-    public void setHelpfulCount(Integer helpfulCount) {
-        this.helpfulCount = helpfulCount;
-    }
-
-    public Boolean getIsReported() {
-        return isReported;
-    }
-
-    public void setIsReported(Boolean isReported) {
-        this.isReported = isReported;
-    }
-
-    public Boolean getIsApproved() {
-        return isApproved;
-    }
-
-    public void setIsApproved(Boolean isApproved) {
-        this.isApproved = isApproved;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 
     // Helper methods
     public BigDecimal getRatingAsBigDecimal() {

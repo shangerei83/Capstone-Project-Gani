@@ -8,6 +8,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,6 +30,10 @@ import java.util.Set;
 @Entity
 @Table(name = "products")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -100,9 +108,7 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Inventory inventory;
 
-    // Constructors
-    public Product() {}
-
+    // Custom constructor for basic product creation
     public Product(String title, String description, BigDecimal price, Category category, User seller) {
         this.title = title;
         this.description = description;
@@ -111,167 +117,6 @@ public class Product {
         this.seller = seller;
         this.isActive = true;
         this.stockQuantity = 0;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getOriginalPrice() {
-        return originalPrice;
-    }
-
-    public void setOriginalPrice(BigDecimal originalPrice) {
-        this.originalPrice = originalPrice;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Boolean getIsFeatured() {
-        return isFeatured;
-    }
-
-    public void setIsFeatured(Boolean isFeatured) {
-        this.isFeatured = isFeatured;
-    }
-
-    public BigDecimal getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(BigDecimal averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public Integer getReviewCount() {
-        return reviewCount;
-    }
-
-    public void setReviewCount(Integer reviewCount) {
-        this.reviewCount = reviewCount;
-    }
-
-    public Integer getViewCount() {
-        return viewCount;
-    }
-
-    public void setViewCount(Integer viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
-
-    public Set<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Set<ProductImage> getImages() {
-        return images;
-    }
-
-    public void setImages(Set<ProductImage> images) {
-        this.images = images;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 
     // Helper methods

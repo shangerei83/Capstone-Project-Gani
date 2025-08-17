@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +24,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "addresses")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
 
     @Id
@@ -73,102 +81,11 @@ public class Address {
         SHIPPING, BILLING, BOTH
     }
 
-    // Constructors
-    public Address() {}
-
+    // Custom constructor for basic address creation
     public Address(String streetAddress, String city, String country) {
         this.streetAddress = streetAddress;
         this.city = city;
         this.country = country;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStateProvince() {
-        return stateProvince;
-    }
-
-    public void setStateProvince(String stateProvince) {
-        this.stateProvince = stateProvince;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Boolean getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
-    public AddressType getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(AddressType addressType) {
-        this.addressType = addressType;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     // Helper methods

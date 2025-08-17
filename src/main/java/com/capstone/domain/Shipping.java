@@ -6,6 +6,10 @@ import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,6 +26,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "shipping")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shipping {
 
     @Id
@@ -95,151 +103,12 @@ public class Shipping {
         PENDING, PROCESSING, SHIPPED, IN_TRANSIT, OUT_FOR_DELIVERY, DELIVERED, FAILED, RETURNED
     }
 
-    // Constructors
-    public Shipping() {}
-
+    // Custom constructor for shipping creation
     public Shipping(ShippingMethod shippingMethod, BigDecimal shippingCost, Order order) {
         this.shippingMethod = shippingMethod;
         this.shippingCost = shippingCost;
         this.order = order;
         this.shippingStatus = ShippingStatus.PENDING;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ShippingMethod getShippingMethod() {
-        return shippingMethod;
-    }
-
-    public void setShippingMethod(ShippingMethod shippingMethod) {
-        this.shippingMethod = shippingMethod;
-    }
-
-    public BigDecimal getShippingCost() {
-        return shippingCost;
-    }
-
-    public void setShippingCost(BigDecimal shippingCost) {
-        this.shippingCost = shippingCost;
-    }
-
-    public String getTrackingNumber() {
-        return trackingNumber;
-    }
-
-    public void setTrackingNumber(String trackingNumber) {
-        this.trackingNumber = trackingNumber;
-    }
-
-    public String getCarrierName() {
-        return carrierName;
-    }
-
-    public void setCarrierName(String carrierName) {
-        this.carrierName = carrierName;
-    }
-
-    public LocalDateTime getEstimatedDeliveryDate() {
-        return estimatedDeliveryDate;
-    }
-
-    public void setEstimatedDeliveryDate(LocalDateTime estimatedDeliveryDate) {
-        this.estimatedDeliveryDate = estimatedDeliveryDate;
-    }
-
-    public LocalDateTime getShippedAt() {
-        return shippedAt;
-    }
-
-    public void setShippedAt(LocalDateTime shippedAt) {
-        this.shippedAt = shippedAt;
-    }
-
-    public LocalDateTime getDeliveredAt() {
-        return deliveredAt;
-    }
-
-    public void setDeliveredAt(LocalDateTime deliveredAt) {
-        this.deliveredAt = deliveredAt;
-    }
-
-    public ShippingStatus getShippingStatus() {
-        return shippingStatus;
-    }
-
-    public void setShippingStatus(ShippingStatus shippingStatus) {
-        this.shippingStatus = shippingStatus;
-    }
-
-    public String getShippingNotes() {
-        return shippingNotes;
-    }
-
-    public void setShippingNotes(String shippingNotes) {
-        this.shippingNotes = shippingNotes;
-    }
-
-    public BigDecimal getPackageWeight() {
-        return packageWeight;
-    }
-
-    public void setPackageWeight(BigDecimal packageWeight) {
-        this.packageWeight = packageWeight;
-    }
-
-    public String getPackageDimensions() {
-        return packageDimensions;
-    }
-
-    public void setPackageDimensions(String packageDimensions) {
-        this.packageDimensions = packageDimensions;
-    }
-
-    public Boolean getSignatureRequired() {
-        return signatureRequired;
-    }
-
-    public void setSignatureRequired(Boolean signatureRequired) {
-        this.signatureRequired = signatureRequired;
-    }
-
-    public BigDecimal getInsuranceAmount() {
-        return insuranceAmount;
-    }
-
-    public void setInsuranceAmount(BigDecimal insuranceAmount) {
-        this.insuranceAmount = insuranceAmount;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     // Helper methods
